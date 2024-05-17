@@ -2,12 +2,12 @@ import { Text } from "@chakra-ui/react";
 import useGenres from "./useGenres";
 
 const GenreList = () => {
-  const { genres, error } = useGenres();
+  const { data, error } = useGenres();
   return (
     <>
       {error && <Text>{error}</Text>}
       <ul>
-        {genres.map((g) => (
+        {data.map((g) => (
           <li>{g.name}</li>
         ))}
       </ul>
