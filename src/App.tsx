@@ -8,20 +8,22 @@ import PlatformSelector from "./components/PlatformSelector";
 import { Platform } from "./hooks/useGames";
 import SortSelector from "./components/SortSelector";
 import { HStack } from "@chakra-ui/react";
+export interface GameQuery {
+  genre: Genre | null;
+  platform: Platform | null;
+  sortOrder: string;
+}
 function App() {
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(
-    null
-  );
-  const [selectedSortOrder, setSelectedSortOrder] = useState("");
+  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+
   const handleGenreSelection = (genre: Genre) => {
-    setSelectedGenre(genre);
+    setGameQuery({ ...gameQuery, genre });
   };
   const handlePlatformSelection = (platform: Platform) => {
-    setSelectedPlatform(platform);
+    setGameQuery({ ...gameQuery, platform });
   };
   const handleSortSelection = (sortOrder: string) => {
-    setSelectedSortOrder(sortOrder);
+    setGameQuery({ ...gameQuery, sortOrder });
   };
   return (
     <>
@@ -42,27 +44,23 @@ function App() {
           <GridItem area="aside" paddingX={3}>
             <GenreList
               onSelectGenre={(genre) => handleGenreSelection(genre)}
-              selectedGenre={selectedGenre}
+              selectedGenre={gameQuery.genre}
             />
           </GridItem>
         </Show>
         <GridItem area="main">
           <HStack paddingX={3} spacing={25} marginBottom={5}>
             <PlatformSelector
-              sPlatform={selectedPlatform}
+              sPlatform={gameQuery.platform}
               onPlatFormSelection={(pltfrm) => handlePlatformSelection(pltfrm)}
             />
             <SortSelector
-              selectedSortOrder={selectedSortOrder}
+              selectedSortOrder={gameQuery.sortOrder}
               onSelectSortOrder={(sortOrder) => handleSortSelection(sortOrder)}
             />
           </HStack>
 
-          <GameGrid
-            selectedGenre={selectedGenre}
-            selectedPlatform={selectedPlatform}
-            selectedSortOrder={selectedSortOrder}
-          />
+          <GameGrid gameQuery={gameQuery} />
         </GridItem>
       </Grid>
     </>
